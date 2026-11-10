@@ -54,7 +54,7 @@ function applySeason(k){const q=k&&SEAS[k];const r=document.documentElement;
   if(q){r.style.setProperty('--bg',q.bg);r.style.setProperty('--red',q.accent);r.style.setProperty('--pine',q.dark);const lt=lumOf(q.accent)>0.6;r.style.setProperty('--lead-fg',lt?'#3B1C0E':'#FFFFFF');r.style.setProperty('--lead-shadow',lt?'0 0 8px rgba(255,255,255,.95),0 0 3px rgba(255,255,255,.9)':'0 1px 2px rgba(0,0,0,.9),0 0 6px rgba(0,0,0,.75),0 0 14px rgba(0,0,0,.45)')}
   else{r.style.removeProperty('--bg');r.style.removeProperty('--red');r.style.removeProperty('--pine');r.style.removeProperty('--lead-fg');r.style.removeProperty('--lead-shadow')}
   buildBg(k)}
-function buildBg(k){let el=document.getElementById('bg');if(el)el.remove();
+function buildBg(k){document.querySelectorAll('#bg').forEach(e=>e.remove());
   const b=document.createElement('div');b.id='bg';b.setAttribute('aria-hidden','true');
   const E=(k&&SEAS[k])?SEAS[k].icons:["🐶","🦴","🎾","🧸","🐕","🐩","🦴"],C=["#E5156F","#1E88E5","#FFB400","#7A3E1D"],
   paw=c=>`<svg viewBox="0 0 24 24" width="1em" height="1em" fill="${c}"><ellipse cx="12" cy="16" rx="5.5" ry="4.5"/><ellipse cx="5" cy="10" rx="2.2" ry="3"/><ellipse cx="9.5" cy="5.5" rx="2.2" ry="3"/><ellipse cx="14.5" cy="5.5" rx="2.2" ry="3"/><ellipse cx="19" cy="10" rx="2.2" ry="3"/></svg>`;
@@ -181,7 +181,7 @@ sh.onclick=e=>{
   if(ql){const[i,d]=ql.dataset.ql.split(",").map(Number);cart[i].q=Math.min(99,Math.max(1,cart[i].q+d));saveCart();mode==="view"?view():showCart()}
   if(rm){cart.splice(+rm.dataset.rm,1);saveCart();mode==="view"?view():showCart()}
   if(z){const i=cur.s.indexOf(z.dataset.z);i<0?cur.s.push(z.dataset.z):cur.s.splice(i,1);cur.s.sort((x,y)=>ALL.indexOf(x)-ALL.indexOf(y));mark();edit()}
-  const sq=t.closest("[data-sq]");if(sq){S.season=sq.dataset.sq;mark();sets();return}
+  const sq=t.closest("[data-sq]");if(sq){S.season=sq.dataset.sq;mark();applySeason(S.season);sets();return}
   if(a){const x=a.dataset.a;
     if(x==="addcart")add();
     if(x==="key")tryKey();
@@ -214,6 +214,6 @@ async function save(){
 }
 render();
 
-(function(){const b=document.createElement("div");b.id="bg";b.setAttribute("aria-hidden","true");const E=["🐶","🦴","🎾","🧸","🐕","🐩","🦴"],C=["#E5156F","#1E88E5","#FFB400","#7A3E1D"],paw=c=>`<svg viewBox="0 0 24 24" width="1em" height="1em" fill="${c}"><ellipse cx="12" cy="16" rx="5.5" ry="4.5"/><ellipse cx="5" cy="10" rx="2.2" ry="3"/><ellipse cx="9.5" cy="5.5" rx="2.2" ry="3"/><ellipse cx="14.5" cy="5.5" rx="2.2" ry="3"/><ellipse cx="19" cy="10" rx="2.2" ry="3"/></svg>`;for(let i=0;i<28;i++){const s=document.createElement("span");if(i%3===0)s.innerHTML=paw(C[(i/3|0)%4]);else s.textContent=E[i%E.length];s.style.cssText=`left:${(i*37+11)%96}%;font-size:${22+(i*7)%22}px;animation-duration:${15+(i*5)%14}s;animation-delay:-${(i*3)%18}s;--r:${(i%2?1:-1)*(40+i*9)}deg;--t:${(i*53)%92}%`;b.appendChild(s)}document.body.prepend(b)})();
+
 (async()=>{try{if(!window.claude)return;const u=await claude.use("user");owner=!!u&&await u.isOwner();if(owner)render()}catch(e){}})();
 </script></body></html>
